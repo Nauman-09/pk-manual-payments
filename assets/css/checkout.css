@@ -1,0 +1,91 @@
+.pkmp-fields {
+	margin: 0;
+}
+
+.pkmp-fields .pkmp-description {
+	margin: 0 0 1em;
+}
+
+.pkmp-methods {
+	border: 0;
+	margin: 0 0 1em;
+	padding: 0;
+}
+
+.pkmp-methods legend {
+	font-weight: 600;
+	margin-bottom: 0.5em;
+	padding: 0;
+}
+
+.pkmp-method {
+	align-items: center;
+	cursor: pointer;
+	display: inline-flex;
+	gap: 0.4em;
+	margin: 0 1.25em 0.5em 0;
+}
+
+.pkmp-method input {
+	margin: 0;
+}
+
+.pkmp-instructions {
+	background: rgba(127, 127, 127, 0.1);
+	border-left: 3px solid currentColor;
+	border-radius: 2px;
+	margin: 0 0 1em;
+	padding: 0.75em 1em;
+}
+
+.pkmp-instructions[hidden] {
+	display: none !important;
+}
+
+.pkmp-instructions p {
+	margin: 0.5em 0 0;
+}
+
+.pkmp-instructions > :first-child {
+	margin-top: 0;
+}
+
+.pkmp-instruction-text {
+	white-space: pre-line;
+}
+
+.pkmp-details {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.pkmp-details li {
+	margin: 0 0 0.25em;
+}
+
+.pkmp-field {
+	margin: 0 0 1em;
+}
+
+.pkmp-field label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 0.35em;
+}
+
+.pkmp-field input[type="text"] {
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.pkmp-hint {
+	display: block;
+	font-size: 0.875em;
+	margin-top: 0.25em;
+	opacity: 0.75;
+}
+
+.pkmp-thankyou {
+	margin: 0 0 2em;
+}
