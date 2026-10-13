@@ -10,6 +10,8 @@ Accept **bank transfer, JazzCash and Easypaisa** payments in WooCommerce with pa
 - Duplicate check: rejects a transaction ID already used on another live order
 - Instructions on the thank-you page and the on-hold email, with the order number as reference
 - Submitted details on the admin order screen and in the admin new-order email
+- Transaction ID column in the Orders list, and search orders by transaction ID
+- "Verify manual payment and mark as paid" order action that records who verified and when
 - Works with the block Cart/Checkout and the classic checkout
 - HPOS compatible
 
@@ -31,6 +33,7 @@ WordPress 6.5+, PHP 7.4+, WooCommerce 8.0+
 pk-manual-payments.php             bootstrap, HPOS/blocks compatibility
 includes/class-pkmp-gateway.php    gateway, validation, emails, admin display
 includes/class-pkmp-blocks-support.php   block checkout integration
+includes/class-pkmp-admin.php      Orders column, search, verify action
 assets/js/blocks.js                block checkout UI
 assets/js/classic.js               classic checkout state handling
 ```

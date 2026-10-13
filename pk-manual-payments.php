@@ -2,7 +2,7 @@
 /**
  * Plugin Name:          PK Manual Payments for WooCommerce
  * Description:          Accept bank transfer and mobile wallet payments (JazzCash, Easypaisa) in WooCommerce, with payment instructions and a customer transaction ID field.
- * Version:              1.0.0
+ * Version:              1.1.0
  * Requires at least:    6.5
  * Requires PHP:         7.4
  * Requires Plugins:     woocommerce
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PKMP_VERSION', '1.0.0' );
+define( 'PKMP_VERSION', '1.1.0' );
 define( 'PKMP_FILE', __FILE__ );
 define( 'PKMP_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PKMP_URL', plugin_dir_url( __FILE__ ) );
@@ -43,6 +43,11 @@ function pkmp_init() {
 
 	require_once PKMP_PATH . 'includes/class-pkmp-gateway.php';
 	add_filter( 'woocommerce_payment_gateways', 'pkmp_register_gateway' );
+
+	if ( is_admin() ) {
+		require_once PKMP_PATH . 'includes/class-pkmp-admin.php';
+		PKMP_Admin::init();
+	}
 }
 add_action( 'plugins_loaded', 'pkmp_init' );
 

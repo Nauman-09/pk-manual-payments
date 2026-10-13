@@ -4,7 +4,7 @@ Tags: woocommerce, bank transfer, manual payment, pakistan, mobile wallet
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,8 @@ Customers choose how they paid, see your account details and instructions, and e
 * Duplicate check: reject a transaction ID that is already attached to another live order.
 * Instructions repeated on the thank-you page and in the on-hold order email, with the order number as the payment reference.
 * Submitted method, transaction ID and sender shown on the admin order screen and in the admin new-order email.
+* Transaction ID column in the Orders list, and search orders by transaction ID.
+* "Verify manual payment and mark as paid" order action. It marks the order paid, records who verified it and when, adds an order note and sends the usual customer emails.
 * Works with the block-based Cart and Checkout and the classic shortcode checkout.
 * Compatible with High-Performance Order Storage (HPOS).
 
@@ -56,7 +58,15 @@ Yes. It supports both the block-based checkout and the classic shortcode checkou
 
 = Where do I see the transaction ID? =
 
-On the order edit screen under the billing address, in the order notes, and in the new-order email sent to the store owner.
+In a column on the Orders list, on the order edit screen under the billing address, in the order notes, and in the new-order email sent to the store owner.
+
+= Can I search orders by transaction ID? =
+
+Yes. Type the transaction ID into the search box on the Orders screen.
+
+= How do I confirm a payment? =
+
+Check the transaction ID against your bank or wallet statement. Then open the order and choose "Verify manual payment and mark as paid" in the Order actions box and click Update. The order moves to Processing (or Completed for virtual orders), and a note records who verified it.
 
 = Can I stop customers reusing a transaction ID? =
 
@@ -68,10 +78,18 @@ It is set to On hold by default, with stock reduced. You can switch this to Pend
 
 == Changelog ==
 
+= 1.1.0 =
+* New: Transaction ID column in the Orders list (HPOS and legacy screens).
+* New: Search orders by transaction ID.
+* New: "Verify manual payment and mark as paid" order action, with verifier and time saved on the order.
+
 = 1.0.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Adds a transaction ID column, search by transaction ID and a verify-and-mark-paid order action.
 
 = 1.0.0 =
 Initial release.

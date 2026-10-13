@@ -13,15 +13,19 @@ defined( 'ABSPATH' ) || exit;
  */
 class PKMP_Gateway extends WC_Payment_Gateway {
 
+	const GATEWAY_ID  = 'pkmp';
 	const META_METHOD = '_pkmp_method';
 	const META_TXN    = '_pkmp_txn_id';
 	const META_SENDER = '_pkmp_sender';
+
+	const META_VERIFIED_AT = '_pkmp_verified_at';
+	const META_VERIFIED_BY = '_pkmp_verified_by';
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id                 = 'pkmp';
+		$this->id                 = self::GATEWAY_ID;
 		$this->icon               = '';
 		$this->has_fields         = true;
 		$this->method_title       = __( 'Manual Payments (Pakistan)', 'pk-manual-payments' );
@@ -702,6 +706,28 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 					<br /><strong><?php esc_html_e( 'Sent from:', 'pk-manual-payments' ); ?></strong> <?php echo esc_html( $submitted['sender'] ); ?>
 				<?php endif; ?>
 			</p>
+			<?php
+			$verified_at = (int) $order->get_meta( self::META_VERIFIED_AT );
+
+			if ( $verified_at ) :
+				$verified_by = get_userdata( (int) $order->get_meta( self::META_VERIFIED_BY ) );
+				?>
+				<p>
+					<strong><?php esc_html_e( 'Verified:', 'pk-manual-payments' ); ?></strong>
+					<?php
+					echo esc_html(
+						sprintf(
+							/* translators: 1: date and time, 2: user display name. */
+							__( '%1$s by %2$s', 'pk-manual-payments' ),
+							wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $verified_at ),
+							$verified_by ? $verified_by->display_name : __( 'a store manager', 'pk-manual-payments' )
+						)
+					);
+					?>
+				</p>
+			<?php elseif ( $order->has_status( array( 'on-hold', 'pending' ) ) ) : ?>
+				<p class="description"><?php esc_html_e( 'Check this transaction ID against your bank or wallet statement, then choose "Verify manual payment and mark as paid" in the Order actions box.', 'pk-manual-payments' ); ?></p>
+			<?php endif; ?>
 		</div>
 		<?php
 	}
