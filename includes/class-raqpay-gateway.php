@@ -2,7 +2,7 @@
 /**
  * Manual payment gateway (bank transfer, JazzCash, Easypaisa).
  *
- * @package PK_Manual_Payments
+ * @package Raqam_Pay
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -11,15 +11,15 @@ defined( 'ABSPATH' ) || exit;
  * Gateway that lets customers pay by transfer and submit a transaction ID.
  * Payments are verified manually by the store owner.
  */
-class PKMP_Gateway extends WC_Payment_Gateway {
+class Raqpay_Gateway extends WC_Payment_Gateway {
 
-	const GATEWAY_ID  = 'pkmp';
-	const META_METHOD = '_pkmp_method';
-	const META_TXN    = '_pkmp_txn_id';
-	const META_SENDER = '_pkmp_sender';
+	const GATEWAY_ID  = 'raqpay';
+	const META_METHOD = '_raqpay_method';
+	const META_TXN    = '_raqpay_txn_id';
+	const META_SENDER = '_raqpay_sender';
 
-	const META_VERIFIED_AT = '_pkmp_verified_at';
-	const META_VERIFIED_BY = '_pkmp_verified_by';
+	const META_VERIFIED_AT = '_raqpay_verified_at';
+	const META_VERIFIED_BY = '_raqpay_verified_by';
 
 	/**
 	 * Constructor.
@@ -28,8 +28,8 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 		$this->id                 = self::GATEWAY_ID;
 		$this->icon               = '';
 		$this->has_fields         = true;
-		$this->method_title       = __( 'Manual Payments (Pakistan)', 'pk-manual-payments' );
-		$this->method_description = __( 'Let customers pay by bank transfer, JazzCash or Easypaisa and submit their transaction ID. You verify each payment manually.', 'pk-manual-payments' );
+		$this->method_title       = __( 'Raqam Pay (Manual Payments)', 'raqam-pay' );
+		$this->method_description = __( 'Let customers pay by bank transfer, JazzCash or Easypaisa and submit their transaction ID. You verify each payment manually.', 'raqam-pay' );
 		$this->supports           = array( 'products' );
 
 		$this->init_form_fields();
@@ -54,7 +54,7 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 		return array(
 			'jazzcash'  => 'JazzCash',
 			'easypaisa' => 'Easypaisa',
-			'bank'      => __( 'Bank Transfer', 'pk-manual-payments' ),
+			'bank'      => __( 'Bank Transfer', 'raqam-pay' ),
 		);
 	}
 
@@ -64,54 +64,54 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 	public function init_form_fields() {
 		$fields = array(
 			'enabled'        => array(
-				'title'   => __( 'Enable/Disable', 'pk-manual-payments' ),
+				'title'   => __( 'Enable/Disable', 'raqam-pay' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable manual payments', 'pk-manual-payments' ),
+				'label'   => __( 'Enable manual payments', 'raqam-pay' ),
 				'default' => 'no',
 			),
 			'title'          => array(
-				'title'       => __( 'Title', 'pk-manual-payments' ),
+				'title'       => __( 'Title', 'raqam-pay' ),
 				'type'        => 'text',
-				'description' => __( 'The payment option name customers see at checkout.', 'pk-manual-payments' ),
-				'default'     => __( 'Bank Transfer / JazzCash / Easypaisa', 'pk-manual-payments' ),
+				'description' => __( 'The payment option name customers see at checkout.', 'raqam-pay' ),
+				'default'     => __( 'Bank Transfer / JazzCash / Easypaisa', 'raqam-pay' ),
 				'desc_tip'    => true,
 			),
 			'description'    => array(
-				'title'       => __( 'Description', 'pk-manual-payments' ),
+				'title'       => __( 'Description', 'raqam-pay' ),
 				'type'        => 'textarea',
-				'description' => __( 'Shown above the payment methods at checkout.', 'pk-manual-payments' ),
-				'default'     => __( 'Send the order total to one of our accounts below, then enter your transaction ID.', 'pk-manual-payments' ),
+				'description' => __( 'Shown above the payment methods at checkout.', 'raqam-pay' ),
+				'default'     => __( 'Send the order total to one of our accounts below, then enter your transaction ID.', 'raqam-pay' ),
 				'desc_tip'    => true,
 			),
 			'order_status'   => array(
-				'title'       => __( 'Order status after checkout', 'pk-manual-payments' ),
+				'title'       => __( 'Order status after checkout', 'raqam-pay' ),
 				'type'        => 'select',
 				'class'       => 'wc-enhanced-select',
-				'description' => __( 'On hold keeps the order waiting until you confirm the payment.', 'pk-manual-payments' ),
+				'description' => __( 'On hold keeps the order waiting until you confirm the payment.', 'raqam-pay' ),
 				'default'     => 'on-hold',
 				'desc_tip'    => true,
 				'options'     => array(
-					'on-hold' => __( 'On hold', 'pk-manual-payments' ),
-					'pending' => __( 'Pending payment', 'pk-manual-payments' ),
+					'on-hold' => __( 'On hold', 'raqam-pay' ),
+					'pending' => __( 'Pending payment', 'raqam-pay' ),
 				),
 			),
 			'require_txn_id' => array(
-				'title'   => __( 'Transaction ID', 'pk-manual-payments' ),
+				'title'   => __( 'Transaction ID', 'raqam-pay' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Require customers to enter a transaction ID', 'pk-manual-payments' ),
+				'label'   => __( 'Require customers to enter a transaction ID', 'raqam-pay' ),
 				'default' => 'yes',
 			),
 			'unique_txn_id'  => array(
-				'title'       => __( 'Duplicate check', 'pk-manual-payments' ),
+				'title'       => __( 'Duplicate check', 'raqam-pay' ),
 				'type'        => 'checkbox',
-				'label'       => __( 'Reject a transaction ID that was already used on another order', 'pk-manual-payments' ),
-				'description' => __( 'Cancelled and failed orders are ignored.', 'pk-manual-payments' ),
+				'label'       => __( 'Reject a transaction ID that was already used on another order', 'raqam-pay' ),
+				'description' => __( 'Cancelled and failed orders are ignored.', 'raqam-pay' ),
 				'default'     => 'yes',
 			),
 			'ask_sender'     => array(
-				'title'   => __( 'Sender details', 'pk-manual-payments' ),
+				'title'   => __( 'Sender details', 'raqam-pay' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Ask for the number or account the payment was sent from (optional for customers)', 'pk-manual-payments' ),
+				'label'   => __( 'Ask for the number or account the payment was sent from (optional for customers)', 'raqam-pay' ),
 				'default' => 'yes',
 			),
 		);
@@ -123,37 +123,37 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 			);
 
 			$fields[ $key . '_enabled' ] = array(
-				'title'   => __( 'Enable', 'pk-manual-payments' ),
+				'title'   => __( 'Enable', 'raqam-pay' ),
 				'type'    => 'checkbox',
 				/* translators: %s: payment method name. */
-				'label'   => sprintf( __( 'Offer %s at checkout', 'pk-manual-payments' ), $label ),
+				'label'   => sprintf( __( 'Offer %s at checkout', 'raqam-pay' ), $label ),
 				'default' => 'no',
 			);
 
 			if ( 'bank' === $key ) {
 				$fields['bank_name'] = array(
-					'title'   => __( 'Bank name', 'pk-manual-payments' ),
+					'title'   => __( 'Bank name', 'raqam-pay' ),
 					'type'    => 'text',
 					'default' => '',
 				);
 			}
 
 			$fields[ $key . '_account_title' ] = array(
-				'title'   => __( 'Account title', 'pk-manual-payments' ),
+				'title'   => __( 'Account title', 'raqam-pay' ),
 				'type'    => 'text',
 				'default' => '',
 			);
 
 			$fields[ $key . '_account_number' ] = array(
-				'title'   => 'bank' === $key ? __( 'Account number / IBAN', 'pk-manual-payments' ) : __( 'Mobile account number', 'pk-manual-payments' ),
+				'title'   => 'bank' === $key ? __( 'Account number / IBAN', 'raqam-pay' ) : __( 'Mobile account number', 'raqam-pay' ),
 				'type'    => 'text',
 				'default' => '',
 			);
 
 			$fields[ $key . '_instructions' ] = array(
-				'title'       => __( 'Extra instructions', 'pk-manual-payments' ),
+				'title'       => __( 'Extra instructions', 'raqam-pay' ),
 				'type'        => 'textarea',
-				'description' => __( 'Plain text. Shown with the account details at checkout, on the thank-you page and in the order email.', 'pk-manual-payments' ),
+				'description' => __( 'Plain text. Shown with the account details at checkout, on the thank-you page and in the order email.', 'raqam-pay' ),
 				'default'     => '',
 				'desc_tip'    => true,
 			);
@@ -213,21 +213,21 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 
 		if ( '' !== $details['bank_name'] ) {
 			$rows[] = array(
-				'label' => __( 'Bank', 'pk-manual-payments' ),
+				'label' => __( 'Bank', 'raqam-pay' ),
 				'value' => $details['bank_name'],
 			);
 		}
 
 		if ( '' !== $details['account_title'] ) {
 			$rows[] = array(
-				'label' => __( 'Account title', 'pk-manual-payments' ),
+				'label' => __( 'Account title', 'raqam-pay' ),
 				'value' => $details['account_title'],
 			);
 		}
 
 		if ( '' !== $details['account_number'] ) {
 			$rows[] = array(
-				'label' => 'bank' === $details['key'] ? __( 'Account no. / IBAN', 'pk-manual-payments' ) : __( 'Account number', 'pk-manual-payments' ),
+				'label' => 'bank' === $details['key'] ? __( 'Account no. / IBAN', 'raqam-pay' ) : __( 'Account number', 'raqam-pay' ),
 				'value' => $details['account_number'],
 			);
 		}
@@ -258,10 +258,10 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 			return;
 		}
 
-		wp_enqueue_style( 'pkmp-checkout', PKMP_URL . 'assets/css/checkout.css', array(), PKMP_VERSION );
+		wp_enqueue_style( 'raqpay-checkout', RAQPAY_URL . 'assets/css/checkout.css', array(), RAQPAY_VERSION );
 
 		if ( ! $has_blocks ) {
-			wp_enqueue_script( 'pkmp-classic', PKMP_URL . 'assets/js/classic.js', array( 'jquery' ), PKMP_VERSION, true );
+			wp_enqueue_script( 'raqpay-classic', RAQPAY_URL . 'assets/js/classic.js', array( 'jquery' ), RAQPAY_VERSION, true );
 		}
 	}
 
@@ -272,9 +272,9 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 	 */
 	private function read_submission() {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing -- WooCommerce verifies the checkout nonce before gateways run.
-		$method = isset( $_POST['pkmp_method'] ) ? sanitize_key( wp_unslash( $_POST['pkmp_method'] ) ) : '';
-		$txn    = isset( $_POST['pkmp_txn_id'] ) ? sanitize_text_field( wp_unslash( $_POST['pkmp_txn_id'] ) ) : '';
-		$sender = isset( $_POST['pkmp_sender'] ) ? sanitize_text_field( wp_unslash( $_POST['pkmp_sender'] ) ) : '';
+		$method = isset( $_POST['raqpay_method'] ) ? sanitize_key( wp_unslash( $_POST['raqpay_method'] ) ) : '';
+		$txn    = isset( $_POST['raqpay_txn_id'] ) ? sanitize_text_field( wp_unslash( $_POST['raqpay_txn_id'] ) ) : '';
+		$sender = isset( $_POST['raqpay_sender'] ) ? sanitize_text_field( wp_unslash( $_POST['raqpay_sender'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		$txn    = strtoupper( preg_replace( '/\s+/', '', $txn ) );
@@ -298,22 +298,22 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 		$methods = $this->get_enabled_methods();
 
 		if ( ! isset( $methods[ $data['method'] ] ) ) {
-			return new WP_Error( 'pkmp_method', __( 'Please choose the payment method you used.', 'pk-manual-payments' ) );
+			return new WP_Error( 'raqpay_method', __( 'Please choose the payment method you used.', 'raqam-pay' ) );
 		}
 
 		if ( '' === $data['txn'] ) {
 			if ( 'yes' === $this->get_option( 'require_txn_id' ) ) {
-				return new WP_Error( 'pkmp_txn_required', __( 'Please enter your transaction ID.', 'pk-manual-payments' ) );
+				return new WP_Error( 'raqpay_txn_required', __( 'Please enter your transaction ID.', 'raqam-pay' ) );
 			}
 			return true;
 		}
 
 		if ( ! preg_match( '/^[A-Za-z0-9\-_\/]{4,40}$/', $data['txn'] ) ) {
-			return new WP_Error( 'pkmp_txn_invalid', __( 'The transaction ID looks invalid. Please check it and try again.', 'pk-manual-payments' ) );
+			return new WP_Error( 'raqpay_txn_invalid', __( 'The transaction ID looks invalid. Please check it and try again.', 'raqam-pay' ) );
 		}
 
 		if ( 'yes' === $this->get_option( 'unique_txn_id' ) && $this->txn_id_exists( $data['txn'], $exclude_order_id ) ) {
-			return new WP_Error( 'pkmp_txn_used', __( 'This transaction ID has already been used on another order. Please check the ID or contact us.', 'pk-manual-payments' ) );
+			return new WP_Error( 'raqpay_txn_used', __( 'This transaction ID has already been used on another order. Please check the ID or contact us.', 'raqam-pay' ) );
 		}
 
 		return true;
@@ -360,16 +360,16 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 		$selected  = isset( $methods[ $submitted['method'] ] ) ? $submitted['method'] : array_key_first( $methods );
 		$require   = 'yes' === $this->get_option( 'require_txn_id' );
 		?>
-		<div class="pkmp-fields">
+		<div class="raqpay-fields">
 			<?php if ( '' !== trim( (string) $this->description ) ) : ?>
-				<p class="pkmp-description"><?php echo esc_html( $this->description ); ?></p>
+				<p class="raqpay-description"><?php echo esc_html( $this->description ); ?></p>
 			<?php endif; ?>
 
-			<fieldset class="pkmp-methods">
-				<legend><?php esc_html_e( 'I will pay via', 'pk-manual-payments' ); ?></legend>
+			<fieldset class="raqpay-methods">
+				<legend><?php esc_html_e( 'I will pay via', 'raqam-pay' ); ?></legend>
 				<?php foreach ( $methods as $key => $details ) : ?>
-					<label class="pkmp-method">
-						<input type="radio" name="pkmp_method" value="<?php echo esc_attr( $key ); ?>" <?php checked( $selected, $key ); ?> />
+					<label class="raqpay-method">
+						<input type="radio" name="raqpay_method" value="<?php echo esc_attr( $key ); ?>" <?php checked( $selected, $key ); ?> />
 						<span><?php echo esc_html( $details['label'] ); ?></span>
 					</label>
 				<?php endforeach; ?>
@@ -381,21 +381,21 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 			}
 			?>
 
-			<p class="form-row form-row-wide pkmp-field">
-				<label for="pkmp_txn_id">
-					<?php esc_html_e( 'Transaction ID', 'pk-manual-payments' ); ?>
+			<p class="form-row form-row-wide raqpay-field">
+				<label for="raqpay_txn_id">
+					<?php esc_html_e( 'Transaction ID', 'raqam-pay' ); ?>
 					<?php if ( $require ) : ?>
-						<abbr class="required" title="<?php esc_attr_e( 'required', 'pk-manual-payments' ); ?>">*</abbr>
+						<abbr class="required" title="<?php esc_attr_e( 'required', 'raqam-pay' ); ?>">*</abbr>
 					<?php endif; ?>
 				</label>
-				<input type="text" class="input-text" name="pkmp_txn_id" id="pkmp_txn_id" value="<?php echo esc_attr( $submitted['txn'] ); ?>" autocomplete="off" maxlength="40" />
-				<span class="pkmp-hint"><?php esc_html_e( 'Find it in the confirmation message or receipt from your bank or wallet app.', 'pk-manual-payments' ); ?></span>
+				<input type="text" class="input-text" name="raqpay_txn_id" id="raqpay_txn_id" value="<?php echo esc_attr( $submitted['txn'] ); ?>" autocomplete="off" maxlength="40" />
+				<span class="raqpay-hint"><?php esc_html_e( 'Find it in the confirmation message or receipt from your bank or wallet app.', 'raqam-pay' ); ?></span>
 			</p>
 
 			<?php if ( 'yes' === $this->get_option( 'ask_sender' ) ) : ?>
-				<p class="form-row form-row-wide pkmp-field">
-					<label for="pkmp_sender"><?php esc_html_e( 'Sent from (number or account, optional)', 'pk-manual-payments' ); ?></label>
-					<input type="text" class="input-text" name="pkmp_sender" id="pkmp_sender" value="<?php echo esc_attr( $submitted['sender'] ); ?>" autocomplete="off" maxlength="40" />
+				<p class="form-row form-row-wide raqpay-field">
+					<label for="raqpay_sender"><?php esc_html_e( 'Sent from (number or account, optional)', 'raqam-pay' ); ?></label>
+					<input type="text" class="input-text" name="raqpay_sender" id="raqpay_sender" value="<?php echo esc_attr( $submitted['sender'] ); ?>" autocomplete="off" maxlength="40" />
 				</p>
 			<?php endif; ?>
 		</div>
@@ -412,19 +412,19 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 	private function output_instructions( $details, $order = null, $hidden = false ) {
 		$rows = $this->get_detail_rows( $details );
 		?>
-		<div class="pkmp-instructions" data-method="<?php echo esc_attr( $details['key'] ); ?>"<?php if ( $hidden ) : ?> hidden<?php endif; ?>>
+		<div class="raqpay-instructions" data-method="<?php echo esc_attr( $details['key'] ); ?>"<?php if ( $hidden ) : ?> hidden<?php endif; ?>>
 			<?php if ( $rows ) : ?>
-				<ul class="pkmp-details">
+				<ul class="raqpay-details">
 					<?php foreach ( $rows as $row ) : ?>
 						<li><strong><?php echo esc_html( $row['label'] ); ?>:</strong> <?php echo esc_html( $row['value'] ); ?></li>
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>
 			<?php if ( '' !== trim( $details['instructions'] ) ) : ?>
-				<p class="pkmp-instruction-text"><?php echo esc_html( $details['instructions'] ); ?></p>
+				<p class="raqpay-instruction-text"><?php echo esc_html( $details['instructions'] ); ?></p>
 			<?php endif; ?>
 			<?php if ( $order ) : ?>
-				<p class="pkmp-reference"><?php echo esc_html( $this->get_reference_text( $order ) ); ?></p>
+				<p class="raqpay-reference"><?php echo esc_html( $this->get_reference_text( $order ) ); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php
@@ -445,7 +445,7 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 
 		return sprintf(
 			/* translators: 1: order number, 2: order total. */
-			__( 'Please use order #%1$s as your payment reference and send exactly %2$s.', 'pk-manual-payments' ),
+			__( 'Please use order #%1$s as your payment reference and send exactly %2$s.', 'raqam-pay' ),
 			$order->get_order_number(),
 			$total
 		);
@@ -477,7 +477,7 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 		$order = wc_get_order( $order_id );
 
 		if ( ! $order ) {
-			wc_add_notice( __( 'Could not find your order. Please try again.', 'pk-manual-payments' ), 'error' );
+			wc_add_notice( __( 'Could not find your order. Please try again.', 'raqam-pay' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
@@ -501,9 +501,9 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 			$status,
 			sprintf(
 				/* translators: 1: payment method name, 2: transaction ID. */
-				__( 'Awaiting manual payment verification. Paid via %1$s, transaction ID: %2$s.', 'pk-manual-payments' ),
+				__( 'Awaiting manual payment verification. Paid via %1$s, transaction ID: %2$s.', 'raqam-pay' ),
 				$labels[ $data['method'] ],
-				'' !== $data['txn'] ? $data['txn'] : __( 'not provided', 'pk-manual-payments' )
+				'' !== $data['txn'] ? $data['txn'] : __( 'not provided', 'raqam-pay' )
 			)
 		);
 
@@ -565,8 +565,8 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 
 		$submitted = $this->get_submitted_details( $order );
 		?>
-		<section class="pkmp-thankyou">
-			<h2 class="woocommerce-order-details__title"><?php esc_html_e( 'How to complete your payment', 'pk-manual-payments' ); ?></h2>
+		<section class="raqpay-thankyou">
+			<h2 class="woocommerce-order-details__title"><?php esc_html_e( 'How to complete your payment', 'raqam-pay' ); ?></h2>
 			<?php $this->output_instructions( $details, $order ); ?>
 			<?php if ( $submitted && '' !== $submitted['txn'] ) : ?>
 				<p>
@@ -574,7 +574,7 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 					echo esc_html(
 						sprintf(
 							/* translators: %s: transaction ID. */
-							__( 'You submitted transaction ID %s. We will confirm your payment and process your order shortly.', 'pk-manual-payments' ),
+							__( 'You submitted transaction ID %s. We will confirm your payment and process your order shortly.', 'raqam-pay' ),
 							$submitted['txn']
 						)
 					);
@@ -606,23 +606,23 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 
 			$rows = array(
 				array(
-					'label' => __( 'Paid via', 'pk-manual-payments' ),
+					'label' => __( 'Paid via', 'raqam-pay' ),
 					'value' => $submitted['method_label'],
 				),
 				array(
-					'label' => __( 'Transaction ID', 'pk-manual-payments' ),
-					'value' => '' !== $submitted['txn'] ? $submitted['txn'] : __( 'not provided', 'pk-manual-payments' ),
+					'label' => __( 'Transaction ID', 'raqam-pay' ),
+					'value' => '' !== $submitted['txn'] ? $submitted['txn'] : __( 'not provided', 'raqam-pay' ),
 				),
 			);
 
 			if ( '' !== $submitted['sender'] ) {
 				$rows[] = array(
-					'label' => __( 'Sent from', 'pk-manual-payments' ),
+					'label' => __( 'Sent from', 'raqam-pay' ),
 					'value' => $submitted['sender'],
 				);
 			}
 
-			$this->output_email_block( __( 'Manual payment details', 'pk-manual-payments' ), $rows, $plain_text );
+			$this->output_email_block( __( 'Manual payment details', 'raqam-pay' ), $rows, $plain_text );
 			return;
 		}
 
@@ -650,7 +650,7 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 			'value' => $this->get_reference_text( $order ),
 		);
 
-		$this->output_email_block( __( 'How to complete your payment', 'pk-manual-payments' ), $rows, $plain_text );
+		$this->output_email_block( __( 'How to complete your payment', 'raqam-pay' ), $rows, $plain_text );
 	}
 
 	/**
@@ -697,13 +697,13 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 			return;
 		}
 		?>
-		<div class="pkmp-admin-details">
-			<h3><?php esc_html_e( 'Manual payment details', 'pk-manual-payments' ); ?></h3>
+		<div class="raqpay-admin-details">
+			<h3><?php esc_html_e( 'Manual payment details', 'raqam-pay' ); ?></h3>
 			<p>
-				<strong><?php esc_html_e( 'Paid via:', 'pk-manual-payments' ); ?></strong> <?php echo esc_html( $submitted['method_label'] ); ?><br />
-				<strong><?php esc_html_e( 'Transaction ID:', 'pk-manual-payments' ); ?></strong> <?php echo esc_html( '' !== $submitted['txn'] ? $submitted['txn'] : __( 'not provided', 'pk-manual-payments' ) ); ?>
+				<strong><?php esc_html_e( 'Paid via:', 'raqam-pay' ); ?></strong> <?php echo esc_html( $submitted['method_label'] ); ?><br />
+				<strong><?php esc_html_e( 'Transaction ID:', 'raqam-pay' ); ?></strong> <?php echo esc_html( '' !== $submitted['txn'] ? $submitted['txn'] : __( 'not provided', 'raqam-pay' ) ); ?>
 				<?php if ( '' !== $submitted['sender'] ) : ?>
-					<br /><strong><?php esc_html_e( 'Sent from:', 'pk-manual-payments' ); ?></strong> <?php echo esc_html( $submitted['sender'] ); ?>
+					<br /><strong><?php esc_html_e( 'Sent from:', 'raqam-pay' ); ?></strong> <?php echo esc_html( $submitted['sender'] ); ?>
 				<?php endif; ?>
 			</p>
 			<?php
@@ -713,20 +713,20 @@ class PKMP_Gateway extends WC_Payment_Gateway {
 				$verified_by = get_userdata( (int) $order->get_meta( self::META_VERIFIED_BY ) );
 				?>
 				<p>
-					<strong><?php esc_html_e( 'Verified:', 'pk-manual-payments' ); ?></strong>
+					<strong><?php esc_html_e( 'Verified:', 'raqam-pay' ); ?></strong>
 					<?php
 					echo esc_html(
 						sprintf(
 							/* translators: 1: date and time, 2: user display name. */
-							__( '%1$s by %2$s', 'pk-manual-payments' ),
+							__( '%1$s by %2$s', 'raqam-pay' ),
 							wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $verified_at ),
-							$verified_by ? $verified_by->display_name : __( 'a store manager', 'pk-manual-payments' )
+							$verified_by ? $verified_by->display_name : __( 'a store manager', 'raqam-pay' )
 						)
 					);
 					?>
 				</p>
 			<?php elseif ( $order->has_status( array( 'on-hold', 'pending' ) ) ) : ?>
-				<p class="description"><?php esc_html_e( 'Check this transaction ID against your bank or wallet statement, then choose "Verify manual payment and mark as paid" in the Order actions box.', 'pk-manual-payments' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Check this transaction ID against your bank or wallet statement, then choose "Verify manual payment and mark as paid" in the Order actions box.', 'raqam-pay' ); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php

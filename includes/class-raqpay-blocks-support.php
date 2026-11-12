@@ -2,7 +2,7 @@
 /**
  * Cart/Checkout blocks integration.
  *
- * @package PK_Manual_Payments
+ * @package Raqam_Pay
  */
 
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
@@ -12,19 +12,19 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Exposes the gateway to the block-based checkout.
  */
-final class PKMP_Blocks_Support extends AbstractPaymentMethodType {
+final class Raqpay_Blocks_Support extends AbstractPaymentMethodType {
 
 	/**
 	 * Payment method name, matches the gateway ID.
 	 *
 	 * @var string
 	 */
-	protected $name = 'pkmp';
+	protected $name = 'raqpay';
 
 	/**
 	 * Gateway instance.
 	 *
-	 * @var PKMP_Gateway|null
+	 * @var Raqpay_Gateway|null
 	 */
 	private $gateway = null;
 
@@ -32,9 +32,9 @@ final class PKMP_Blocks_Support extends AbstractPaymentMethodType {
 	 * Load settings and the gateway.
 	 */
 	public function initialize() {
-		$this->settings = get_option( 'woocommerce_pkmp_settings', array() );
+		$this->settings = get_option( 'woocommerce_raqpay_settings', array() );
 		$gateways       = WC()->payment_gateways()->payment_gateways();
-		$this->gateway  = isset( $gateways['pkmp'] ) ? $gateways['pkmp'] : null;
+		$this->gateway  = isset( $gateways['raqpay'] ) ? $gateways['raqpay'] : null;
 	}
 
 	/**
@@ -55,15 +55,15 @@ final class PKMP_Blocks_Support extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_script_handles() {
 		wp_register_script(
-			'pkmp-blocks',
-			PKMP_URL . 'assets/js/blocks.js',
+			'raqpay-blocks',
+			RAQPAY_URL . 'assets/js/blocks.js',
 			array( 'wc-blocks-registry', 'wc-settings', 'wp-element', 'wp-i18n', 'wp-html-entities' ),
-			PKMP_VERSION,
+			RAQPAY_VERSION,
 			true
 		);
-		wp_set_script_translations( 'pkmp-blocks', 'pk-manual-payments' );
+		wp_set_script_translations( 'raqpay-blocks', 'raqam-pay' );
 
-		return array( 'pkmp-blocks' );
+		return array( 'raqpay-blocks' );
 	}
 
 	/**

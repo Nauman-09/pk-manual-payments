@@ -1,9 +1,10 @@
-=== PK Manual Payments for WooCommerce ===
-Contributors: your-wporg-username
+=== Raqam Pay for WooCommerce ===
+Contributors: nauman760
 Tags: woocommerce, bank transfer, manual payment, pakistan, mobile wallet
 Requires at least: 6.5
-Tested up to: 6.9
+Tested up to: 7.1
 Requires PHP: 7.4
+Requires Plugins: woocommerce
 Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -38,7 +39,7 @@ This plugin does not connect to any payment provider and does not verify payment
 
 1. Install and activate WooCommerce.
 2. Upload the plugin folder to `/wp-content/plugins/`, or install it from the Plugins screen, and activate it.
-3. Go to WooCommerce > Settings > Payments > Manual Payments (Pakistan).
+3. Go to WooCommerce > Settings > Payments > Raqam Pay (Manual Payments).
 4. Enable the gateway, switch on the payment methods you accept and fill in your account details.
 5. Place a test order to see the checkout.
 

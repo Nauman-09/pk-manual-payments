@@ -14,7 +14,7 @@
 	var __ = window.wp.i18n.__;
 	var decodeEntities = window.wp.htmlEntities.decodeEntities;
 
-	var data = wcSettings.getSetting( 'pkmp_data', {} );
+	var data = wcSettings.getSetting( 'raqpay_data', {} );
 	var methods = data.methods || [];
 
 	if ( ! methods.length ) {
@@ -22,7 +22,7 @@
 	}
 
 	var TXN_PATTERN = /^[A-Za-z0-9\-_\/]{4,40}$/;
-	var title = decodeEntities( data.title || '' ) || __( 'Manual payment', 'pk-manual-payments' );
+	var title = decodeEntities( data.title || '' ) || __( 'Manual payment', 'raqam-pay' );
 
 	function findMethod( key ) {
 		for ( var i = 0; i < methods.length; i++ ) {
@@ -41,7 +41,7 @@
 			children.push(
 				createElement(
 					'ul',
-					{ className: 'pkmp-details', key: 'rows' },
+					{ className: 'raqpay-details', key: 'rows' },
 					method.rows.map( function ( row, index ) {
 						return createElement(
 							'li',
@@ -56,23 +56,23 @@
 
 		if ( method.instructions ) {
 			children.push(
-				createElement( 'p', { className: 'pkmp-instruction-text', key: 'text' }, method.instructions )
+				createElement( 'p', { className: 'raqpay-instruction-text', key: 'text' }, method.instructions )
 			);
 		}
 
-		return createElement( 'div', { className: 'pkmp-instructions' }, children );
+		return createElement( 'div', { className: 'raqpay-instructions' }, children );
 	}
 
 	function Field( props ) {
 		return createElement(
 			'div',
-			{ className: 'pkmp-field' },
+			{ className: 'raqpay-field' },
 			createElement(
 				'label',
 				{ htmlFor: props.id },
 				props.label,
 				props.required
-					? createElement( 'abbr', { className: 'required', title: __( 'required', 'pk-manual-payments' ) }, ' *' )
+					? createElement( 'abbr', { className: 'required', title: __( 'required', 'raqam-pay' ) }, ' *' )
 					: null
 			),
 			createElement( 'input', {
@@ -85,7 +85,7 @@
 					props.onChange( event.target.value );
 				},
 			} ),
-			props.hint ? createElement( 'span', { className: 'pkmp-hint' }, props.hint ) : null
+			props.hint ? createElement( 'span', { className: 'raqpay-hint' }, props.hint ) : null
 		);
 	}
 
@@ -116,14 +116,14 @@
 					if ( data.requireTxn && ! cleanTxn ) {
 						return {
 							type: ERROR,
-							message: __( 'Please enter your transaction ID.', 'pk-manual-payments' ),
+							message: __( 'Please enter your transaction ID.', 'raqam-pay' ),
 						};
 					}
 
 					if ( cleanTxn && ! TXN_PATTERN.test( cleanTxn ) ) {
 						return {
 							type: ERROR,
-							message: __( 'The transaction ID looks invalid. Please check it and try again.', 'pk-manual-payments' ),
+							message: __( 'The transaction ID looks invalid. Please check it and try again.', 'raqam-pay' ),
 						};
 					}
 
@@ -131,9 +131,9 @@
 						type: SUCCESS,
 						meta: {
 							paymentMethodData: {
-								pkmp_method: method,
-								pkmp_txn_id: cleanTxn,
-								pkmp_sender: data.askSender ? sender : '',
+								raqpay_method: method,
+								raqpay_txn_id: cleanTxn,
+								raqpay_sender: data.askSender ? sender : '',
 							},
 						},
 					};
@@ -144,21 +144,21 @@
 
 		return createElement(
 			'div',
-			{ className: 'pkmp-fields' },
+			{ className: 'raqpay-fields' },
 			data.description
-				? createElement( 'p', { className: 'pkmp-description' }, decodeEntities( data.description ) )
+				? createElement( 'p', { className: 'raqpay-description' }, decodeEntities( data.description ) )
 				: null,
 			createElement(
 				'fieldset',
-				{ className: 'pkmp-methods' },
-				createElement( 'legend', null, __( 'I will pay via', 'pk-manual-payments' ) ),
+				{ className: 'raqpay-methods' },
+				createElement( 'legend', null, __( 'I will pay via', 'raqam-pay' ) ),
 				methods.map( function ( item ) {
 					return createElement(
 						'label',
-						{ className: 'pkmp-method', key: item.key },
+						{ className: 'raqpay-method', key: item.key },
 						createElement( 'input', {
 							type: 'radio',
-							name: 'pkmp_method',
+							name: 'raqpay_method',
 							value: item.key,
 							checked: method === item.key,
 							onChange: function () {
@@ -171,17 +171,17 @@
 			),
 			createElement( Instructions, { method: findMethod( method ) } ),
 			createElement( Field, {
-				id: 'pkmp-txn-id',
-				label: __( 'Transaction ID', 'pk-manual-payments' ),
+				id: 'raqpay-txn-id',
+				label: __( 'Transaction ID', 'raqam-pay' ),
 				required: !! data.requireTxn,
 				value: txn,
 				onChange: setTxn,
-				hint: __( 'Find it in the confirmation message or receipt from your bank or wallet app.', 'pk-manual-payments' ),
+				hint: __( 'Find it in the confirmation message or receipt from your bank or wallet app.', 'raqam-pay' ),
 			} ),
 			data.askSender
 				? createElement( Field, {
-						id: 'pkmp-sender',
-						label: __( 'Sent from (number or account, optional)', 'pk-manual-payments' ),
+						id: 'raqpay-sender',
+						label: __( 'Sent from (number or account, optional)', 'raqam-pay' ),
 						value: sender,
 						onChange: setSender,
 				  } )
@@ -192,25 +192,25 @@
 	function Preview() {
 		return createElement(
 			'div',
-			{ className: 'pkmp-fields' },
+			{ className: 'raqpay-fields' },
 			createElement(
 				'p',
-				{ className: 'pkmp-description' },
+				{ className: 'raqpay-description' },
 				decodeEntities( data.description || '' ) || title
 			)
 		);
 	}
 
 	registry.registerPaymentMethod( {
-		name: 'pkmp',
-		label: createElement( 'span', { className: 'pkmp-label' }, title ),
+		name: 'raqpay',
+		label: createElement( 'span', { className: 'raqpay-label' }, title ),
 		ariaLabel: title,
 		content: createElement( Content, null ),
 		edit: createElement( Preview, null ),
 		canMakePayment: function () {
 			return true;
 		},
-		paymentMethodId: 'pkmp',
+		paymentMethodId: 'raqpay',
 		supports: {
 			features: data.supports || [ 'products' ],
 		},
