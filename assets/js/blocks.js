@@ -14,7 +14,7 @@
 	var __ = window.wp.i18n.__;
 	var decodeEntities = window.wp.htmlEntities.decodeEntities;
 
-	var data = wcSettings.getSetting( 'raqpay_data', {} );
+	var data = wcSettings.getSetting( 'nmpay_data', {} );
 	var methods = data.methods || [];
 
 	if ( ! methods.length ) {
@@ -22,7 +22,7 @@
 	}
 
 	var TXN_PATTERN = /^[A-Za-z0-9\-_\/]{4,40}$/;
-	var title = decodeEntities( data.title || '' ) || __( 'Manual payment', 'raqam-pay' );
+	var title = decodeEntities( data.title || '' ) || __( 'Manual payment', 'nauman-manual-payments' );
 
 	function findMethod( key ) {
 		for ( var i = 0; i < methods.length; i++ ) {
@@ -41,7 +41,7 @@
 			children.push(
 				createElement(
 					'ul',
-					{ className: 'raqpay-details', key: 'rows' },
+					{ className: 'nmpay-details', key: 'rows' },
 					method.rows.map( function ( row, index ) {
 						return createElement(
 							'li',
@@ -56,23 +56,23 @@
 
 		if ( method.instructions ) {
 			children.push(
-				createElement( 'p', { className: 'raqpay-instruction-text', key: 'text' }, method.instructions )
+				createElement( 'p', { className: 'nmpay-instruction-text', key: 'text' }, method.instructions )
 			);
 		}
 
-		return createElement( 'div', { className: 'raqpay-instructions' }, children );
+		return createElement( 'div', { className: 'nmpay-instructions' }, children );
 	}
 
 	function Field( props ) {
 		return createElement(
 			'div',
-			{ className: 'raqpay-field' },
+			{ className: 'nmpay-field' },
 			createElement(
 				'label',
 				{ htmlFor: props.id },
 				props.label,
 				props.required
-					? createElement( 'abbr', { className: 'required', title: __( 'required', 'raqam-pay' ) }, ' *' )
+					? createElement( 'abbr', { className: 'required', title: __( 'required', 'nauman-manual-payments' ) }, ' *' )
 					: null
 			),
 			createElement( 'input', {
@@ -85,7 +85,7 @@
 					props.onChange( event.target.value );
 				},
 			} ),
-			props.hint ? createElement( 'span', { className: 'raqpay-hint' }, props.hint ) : null
+			props.hint ? createElement( 'span', { className: 'nmpay-hint' }, props.hint ) : null
 		);
 	}
 
@@ -116,14 +116,14 @@
 					if ( data.requireTxn && ! cleanTxn ) {
 						return {
 							type: ERROR,
-							message: __( 'Please enter your transaction ID.', 'raqam-pay' ),
+							message: __( 'Please enter your transaction ID.', 'nauman-manual-payments' ),
 						};
 					}
 
 					if ( cleanTxn && ! TXN_PATTERN.test( cleanTxn ) ) {
 						return {
 							type: ERROR,
-							message: __( 'The transaction ID looks invalid. Please check it and try again.', 'raqam-pay' ),
+							message: __( 'The transaction ID looks invalid. Please check it and try again.', 'nauman-manual-payments' ),
 						};
 					}
 
@@ -131,9 +131,9 @@
 						type: SUCCESS,
 						meta: {
 							paymentMethodData: {
-								raqpay_method: method,
-								raqpay_txn_id: cleanTxn,
-								raqpay_sender: data.askSender ? sender : '',
+								nmpay_method: method,
+								nmpay_txn_id: cleanTxn,
+								nmpay_sender: data.askSender ? sender : '',
 							},
 						},
 					};
@@ -144,21 +144,21 @@
 
 		return createElement(
 			'div',
-			{ className: 'raqpay-fields' },
+			{ className: 'nmpay-fields' },
 			data.description
-				? createElement( 'p', { className: 'raqpay-description' }, decodeEntities( data.description ) )
+				? createElement( 'p', { className: 'nmpay-description' }, decodeEntities( data.description ) )
 				: null,
 			createElement(
 				'fieldset',
-				{ className: 'raqpay-methods' },
-				createElement( 'legend', null, __( 'I will pay via', 'raqam-pay' ) ),
+				{ className: 'nmpay-methods' },
+				createElement( 'legend', null, __( 'I will pay via', 'nauman-manual-payments' ) ),
 				methods.map( function ( item ) {
 					return createElement(
 						'label',
-						{ className: 'raqpay-method', key: item.key },
+						{ className: 'nmpay-method', key: item.key },
 						createElement( 'input', {
 							type: 'radio',
-							name: 'raqpay_method',
+							name: 'nmpay_method',
 							value: item.key,
 							checked: method === item.key,
 							onChange: function () {
@@ -171,17 +171,17 @@
 			),
 			createElement( Instructions, { method: findMethod( method ) } ),
 			createElement( Field, {
-				id: 'raqpay-txn-id',
-				label: __( 'Transaction ID', 'raqam-pay' ),
+				id: 'nmpay-txn-id',
+				label: __( 'Transaction ID', 'nauman-manual-payments' ),
 				required: !! data.requireTxn,
 				value: txn,
 				onChange: setTxn,
-				hint: __( 'Find it in the confirmation message or receipt from your bank or wallet app.', 'raqam-pay' ),
+				hint: __( 'Find it in the confirmation message or receipt from your bank or wallet app.', 'nauman-manual-payments' ),
 			} ),
 			data.askSender
 				? createElement( Field, {
-						id: 'raqpay-sender',
-						label: __( 'Sent from (number or account, optional)', 'raqam-pay' ),
+						id: 'nmpay-sender',
+						label: __( 'Sent from (number or account, optional)', 'nauman-manual-payments' ),
 						value: sender,
 						onChange: setSender,
 				  } )
@@ -192,25 +192,25 @@
 	function Preview() {
 		return createElement(
 			'div',
-			{ className: 'raqpay-fields' },
+			{ className: 'nmpay-fields' },
 			createElement(
 				'p',
-				{ className: 'raqpay-description' },
+				{ className: 'nmpay-description' },
 				decodeEntities( data.description || '' ) || title
 			)
 		);
 	}
 
 	registry.registerPaymentMethod( {
-		name: 'raqpay',
-		label: createElement( 'span', { className: 'raqpay-label' }, title ),
+		name: 'nmpay',
+		label: createElement( 'span', { className: 'nmpay-label' }, title ),
 		ariaLabel: title,
 		content: createElement( Content, null ),
 		edit: createElement( Preview, null ),
 		canMakePayment: function () {
 			return true;
 		},
-		paymentMethodId: 'raqpay',
+		paymentMethodId: 'nmpay',
 		supports: {
 			features: data.supports || [ 'products' ],
 		},

@@ -1,4 +1,4 @@
-=== Raqam Pay for WooCommerce ===
+=== Nauman Manual Payments for WooCommerce ===
 Contributors: nauman760
 Tags: woocommerce, bank transfer, manual payment, pakistan, mobile wallet
 Requires at least: 6.5
@@ -39,7 +39,7 @@ This plugin does not connect to any payment provider and does not verify payment
 
 1. Install and activate WooCommerce.
 2. Upload the plugin folder to `/wp-content/plugins/`, or install it from the Plugins screen, and activate it.
-3. Go to WooCommerce > Settings > Payments > Raqam Pay (Manual Payments).
+3. Go to WooCommerce > Settings > Payments > Nauman Manual Payments.
 4. Enable the gateway, switch on the payment methods you accept and fill in your account details.
 5. Place a test order to see the checkout.
 

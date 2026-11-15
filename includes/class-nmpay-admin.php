@@ -2,7 +2,7 @@
 /**
  * Admin tools: Orders list column, transaction ID search and payment verification.
  *
- * @package Raqam_Pay
+ * @package Nauman_Manual_Payments
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -10,22 +10,22 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Helps store owners reconcile manual payments from the Orders screen.
  */
-class Raqpay_Admin {
+class Nmpay_Admin {
 
-	const ACTION_VERIFY = 'raqpay_verify_payment';
-	const COLUMN_ID     = 'raqpay_txn';
+	const ACTION_VERIFY = 'nmpay_verify_payment';
+	const COLUMN_ID     = 'nmpay_txn';
 
 	/**
 	 * Single instance.
 	 *
-	 * @var Raqpay_Admin|null
+	 * @var Nmpay_Admin|null
 	 */
 	private static $instance = null;
 
 	/**
 	 * Register the hooks once.
 	 *
-	 * @return Raqpay_Admin
+	 * @return Nmpay_Admin
 	 */
 	public static function init() {
 		if ( null === self::$instance ) {
@@ -64,7 +64,7 @@ class Raqpay_Admin {
 	 */
 	public function add_search_key( $keys ) {
 		$keys   = is_array( $keys ) ? $keys : array();
-		$keys[] = Raqpay_Gateway::META_TXN;
+		$keys[] = Nmpay_Gateway::META_TXN;
 		return array_values( array_unique( $keys ) );
 	}
 
@@ -75,7 +75,7 @@ class Raqpay_Admin {
 	 * @return array
 	 */
 	public function add_column( $columns ) {
-		$label    = __( 'Transaction ID', 'raqam-pay' );
+		$label    = __( 'Transaction ID', 'nauman-manual-payments' );
 		$result   = array();
 		$inserted = false;
 
@@ -131,23 +131,23 @@ class Raqpay_Admin {
 	 * @param WC_Order $order Order.
 	 */
 	private function render_column( $order ) {
-		if ( Raqpay_Gateway::GATEWAY_ID !== $order->get_payment_method() ) {
+		if ( Nmpay_Gateway::GATEWAY_ID !== $order->get_payment_method() ) {
 			echo '<span aria-hidden="true">&ndash;</span>';
 			return;
 		}
 
-		$txn    = (string) $order->get_meta( Raqpay_Gateway::META_TXN );
-		$method = (string) $order->get_meta( Raqpay_Gateway::META_METHOD );
-		$labels = Raqpay_Gateway::get_method_labels();
+		$txn    = (string) $order->get_meta( Nmpay_Gateway::META_TXN );
+		$method = (string) $order->get_meta( Nmpay_Gateway::META_METHOD );
+		$labels = Nmpay_Gateway::get_method_labels();
 
-		echo '<strong>' . esc_html( '' !== $txn ? $txn : __( 'not provided', 'raqam-pay' ) ) . '</strong>';
+		echo '<strong>' . esc_html( '' !== $txn ? $txn : __( 'not provided', 'nauman-manual-payments' ) ) . '</strong>';
 
 		if ( isset( $labels[ $method ] ) ) {
 			echo '<br /><small>' . esc_html( $labels[ $method ] ) . '</small>';
 		}
 
-		if ( $order->get_meta( Raqpay_Gateway::META_VERIFIED_AT ) ) {
-			echo '<br /><small>' . esc_html__( 'Verified', 'raqam-pay' ) . '</small>';
+		if ( $order->get_meta( Nmpay_Gateway::META_VERIFIED_AT ) ) {
+			echo '<br /><small>' . esc_html__( 'Verified', 'nauman-manual-payments' ) . '</small>';
 		}
 	}
 
@@ -158,7 +158,7 @@ class Raqpay_Admin {
 	 * @return bool
 	 */
 	private function can_verify( $order ) {
-		return Raqpay_Gateway::GATEWAY_ID === $order->get_payment_method()
+		return Nmpay_Gateway::GATEWAY_ID === $order->get_payment_method()
 			&& $order->has_status( array( 'on-hold', 'pending' ) )
 			&& current_user_can( 'edit_shop_orders' );
 	}
@@ -177,7 +177,7 @@ class Raqpay_Admin {
 		}
 
 		if ( $order instanceof WC_Order && $this->can_verify( $order ) ) {
-			$actions[ self::ACTION_VERIFY ] = __( 'Verify manual payment and mark as paid', 'raqam-pay' );
+			$actions[ self::ACTION_VERIFY ] = __( 'Verify manual payment and mark as paid', 'nauman-manual-payments' );
 		}
 
 		return $actions;
@@ -196,15 +196,15 @@ class Raqpay_Admin {
 
 		$user = wp_get_current_user();
 
-		$order->update_meta_data( Raqpay_Gateway::META_VERIFIED_AT, time() );
-		$order->update_meta_data( Raqpay_Gateway::META_VERIFIED_BY, (int) $user->ID );
+		$order->update_meta_data( Nmpay_Gateway::META_VERIFIED_AT, time() );
+		$order->update_meta_data( Nmpay_Gateway::META_VERIFIED_BY, (int) $user->ID );
 		$order->add_order_note(
 			sprintf(
 				/* translators: %s: name of the user who verified the payment. */
-				__( 'Manual payment verified by %s.', 'raqam-pay' ),
-				$user && $user->display_name ? $user->display_name : __( 'a store manager', 'raqam-pay' )
+				__( 'Manual payment verified by %s.', 'nauman-manual-payments' ),
+				$user && $user->display_name ? $user->display_name : __( 'a store manager', 'nauman-manual-payments' )
 			)
 		);
-		$order->payment_complete( (string) $order->get_meta( Raqpay_Gateway::META_TXN ) );
+		$order->payment_complete( (string) $order->get_meta( Nmpay_Gateway::META_TXN ) );
 	}
 }

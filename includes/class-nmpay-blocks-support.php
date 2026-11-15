@@ -2,7 +2,7 @@
 /**
  * Cart/Checkout blocks integration.
  *
- * @package Raqam_Pay
+ * @package Nauman_Manual_Payments
  */
 
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
@@ -12,19 +12,19 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Exposes the gateway to the block-based checkout.
  */
-final class Raqpay_Blocks_Support extends AbstractPaymentMethodType {
+final class Nmpay_Blocks_Support extends AbstractPaymentMethodType {
 
 	/**
 	 * Payment method name, matches the gateway ID.
 	 *
 	 * @var string
 	 */
-	protected $name = 'raqpay';
+	protected $name = 'nmpay';
 
 	/**
 	 * Gateway instance.
 	 *
-	 * @var Raqpay_Gateway|null
+	 * @var Nmpay_Gateway|null
 	 */
 	private $gateway = null;
 
@@ -32,9 +32,9 @@ final class Raqpay_Blocks_Support extends AbstractPaymentMethodType {
 	 * Load settings and the gateway.
 	 */
 	public function initialize() {
-		$this->settings = get_option( 'woocommerce_raqpay_settings', array() );
+		$this->settings = get_option( 'woocommerce_nmpay_settings', array() );
 		$gateways       = WC()->payment_gateways()->payment_gateways();
-		$this->gateway  = isset( $gateways['raqpay'] ) ? $gateways['raqpay'] : null;
+		$this->gateway  = isset( $gateways['nmpay'] ) ? $gateways['nmpay'] : null;
 	}
 
 	/**
@@ -55,15 +55,15 @@ final class Raqpay_Blocks_Support extends AbstractPaymentMethodType {
 	 */
 	public function get_payment_method_script_handles() {
 		wp_register_script(
-			'raqpay-blocks',
-			RAQPAY_URL . 'assets/js/blocks.js',
+			'nmpay-blocks',
+			NMPAY_URL . 'assets/js/blocks.js',
 			array( 'wc-blocks-registry', 'wc-settings', 'wp-element', 'wp-i18n', 'wp-html-entities' ),
-			RAQPAY_VERSION,
+			NMPAY_VERSION,
 			true
 		);
-		wp_set_script_translations( 'raqpay-blocks', 'raqam-pay' );
+		wp_set_script_translations( 'nmpay-blocks', 'nauman-manual-payments' );
 
-		return array( 'raqpay-blocks' );
+		return array( 'nmpay-blocks' );
 	}
 
 	/**

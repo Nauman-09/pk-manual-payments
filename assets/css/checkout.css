@@ -1,24 +1,24 @@
-.raqpay-fields {
+.nmpay-fields {
 	margin: 0;
 }
 
-.raqpay-fields .raqpay-description {
+.nmpay-fields .nmpay-description {
 	margin: 0 0 1em;
 }
 
-.raqpay-methods {
+.nmpay-methods {
 	border: 0;
 	margin: 0 0 1em;
 	padding: 0;
 }
 
-.raqpay-methods legend {
+.nmpay-methods legend {
 	font-weight: 600;
 	margin-bottom: 0.5em;
 	padding: 0;
 }
 
-.raqpay-method {
+.nmpay-method {
 	align-items: center;
 	cursor: pointer;
 	display: inline-flex;
@@ -26,11 +26,11 @@
 	margin: 0 1.25em 0.5em 0;
 }
 
-.raqpay-method input {
+.nmpay-method input {
 	margin: 0;
 }
 
-.raqpay-instructions {
+.nmpay-instructions {
 	background: rgba(127, 127, 127, 0.1);
 	border-left: 3px solid currentColor;
 	border-radius: 2px;
@@ -38,54 +38,54 @@
 	padding: 0.75em 1em;
 }
 
-.raqpay-instructions[hidden] {
+.nmpay-instructions[hidden] {
 	display: none !important;
 }
 
-.raqpay-instructions p {
+.nmpay-instructions p {
 	margin: 0.5em 0 0;
 }
 
-.raqpay-instructions > :first-child {
+.nmpay-instructions > :first-child {
 	margin-top: 0;
 }
 
-.raqpay-instruction-text {
+.nmpay-instruction-text {
 	white-space: pre-line;
 }
 
-.raqpay-details {
+.nmpay-details {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-.raqpay-details li {
+.nmpay-details li {
 	margin: 0 0 0.25em;
 }
 
-.raqpay-field {
+.nmpay-field {
 	margin: 0 0 1em;
 }
 
-.raqpay-field label {
+.nmpay-field label {
 	display: block;
 	font-weight: 600;
 	margin-bottom: 0.35em;
 }
 
-.raqpay-field input[type="text"] {
+.nmpay-field input[type="text"] {
 	box-sizing: border-box;
 	width: 100%;
 }
 
-.raqpay-hint {
+.nmpay-hint {
 	display: block;
 	font-size: 0.875em;
 	margin-top: 0.25em;
 	opacity: 0.75;
 }
 
-.raqpay-thankyou {
+.nmpay-thankyou {
 	margin: 0 0 2em;
 }

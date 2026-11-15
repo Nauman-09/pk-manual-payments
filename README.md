@@ -1,4 +1,4 @@
-# Raqam Pay for WooCommerce
+# Nauman Manual Payments for WooCommerce
 
 Accept **bank transfer, JazzCash and Easypaisa** payments in WooCommerce with payment instructions and a customer **transaction ID** field. You verify each payment manually, then mark the order paid.
 
@@ -23,17 +23,17 @@ WordPress 6.5+, PHP 7.4+, WooCommerce 8.0+
 
 ## Install
 
-1. Download the latest release zip, or zip the `raqam-pay` folder.
+1. Download the latest release zip, or zip the `nauman-manual-payments` folder.
 2. In WordPress go to **Plugins → Add New → Upload Plugin** and activate it.
-3. Go to **WooCommerce → Settings → Payments → Raqam Pay (Manual Payments)** and enter your account details.
+3. Go to **WooCommerce → Settings → Payments → Nauman Manual Payments** and enter your account details.
 
 ## Structure
 
 ```
-raqam-pay.php             bootstrap, HPOS/blocks compatibility
-includes/class-raqpay-gateway.php    gateway, validation, emails, admin display
-includes/class-raqpay-blocks-support.php   block checkout integration
-includes/class-raqpay-admin.php      Orders column, search, verify action
+nauman-manual-payments.php             bootstrap, HPOS/blocks compatibility
+includes/class-nmpay-gateway.php    gateway, validation, emails, admin display
+includes/class-nmpay-blocks-support.php   block checkout integration
+includes/class-nmpay-admin.php      Orders column, search, verify action
 assets/js/blocks.js                block checkout UI
 assets/js/classic.js               classic checkout state handling
 ```
